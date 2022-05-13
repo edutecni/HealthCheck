@@ -25,6 +25,7 @@ namespace HealthCheck
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+                //configuration.RootPath = "HealthCheck/dist";
             });
         }
 
@@ -64,6 +65,7 @@ namespace HealthCheck
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
+                //spa.Options.SourcePath = "HealthCheck";
 
                 if (env.IsDevelopment())
                 {
