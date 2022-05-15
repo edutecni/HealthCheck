@@ -27,6 +27,7 @@ namespace HealthCheck
                 configuration.RootPath = "ClientApp/dist";
                 //configuration.RootPath = "HealthCheck/dist";
             });
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,9 +52,8 @@ namespace HealthCheck
                 {
                     // Retrieve cache configuration from appsettings.json
                     context.Context.Response.Headers["Cache-Control"] =
-                        Configuration["StaticFiles:Headers:Cache-Control"];
+                        Configuration["StaticFiles:Headers:Cache-Control"];                    
                     
-                    //context.Context.Response.Headers["Cache-Control"] = "max-age=3600";
                 }
             });
 
@@ -66,6 +66,7 @@ namespace HealthCheck
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/hc");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
