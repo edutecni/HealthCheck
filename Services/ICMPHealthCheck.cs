@@ -11,8 +11,14 @@ namespace HealthCheck.Services
     // Essa classe é um Serviço também conhecido com Middleware
     public class ICMPHealthCheck : IHealthCheck
     {
-        private readonly string Host = "www.does-not-exist.com";
-        private readonly int HealthyRoundtripTime = 30;
+        private readonly string Host;
+        private readonly int HealthyRoundtripTime;
+
+        public ICMPHealthCheck(string host, int healpthyRoundTripTime)
+        {
+            Host = host;
+            HealthyRoundtripTime = healpthyRoundTripTime;
+        }
 
         public async Task<HealthCheckResult> CheckHealthAsync(
                 HealthCheckContext context,
@@ -27,15 +33,19 @@ namespace HealthCheck.Services
                 switch (reply.Status)
                 {
                     case IPStatus.Success:
-                        return (reply.RoundtripTime > HealthyRoundtripTime) ? HealthCheckResult.Degraded() : HealthCheckResult.Healthy();                    
+                        var msg = $"ICMP to {Host} took {reply.RoundtripTime} ms.";
+
+                        return (reply.RoundtripTime > HealthyRoundtripTime) ? HealthCheckResult.Degraded(msg) : HealthCheckResult.Healthy(msg);                    
                     default:
-                        return HealthCheckResult.Unhealthy();
+                        var err = $"ICMP to {Host} failed: {reply.Status}";
+
+                        return HealthCheckResult.Unhealthy(err);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return HealthCheckResult.Unhealthy();
+                var err = $"ICMP to {Host} failed: {ex.Message}";
+                return HealthCheckResult.Unhealthy(err);
             }
         }
     }
