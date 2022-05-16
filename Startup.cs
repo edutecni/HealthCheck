@@ -1,3 +1,4 @@
+using HealthCheck.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,13 +22,19 @@ namespace HealthCheck
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
+                // Altere o configuration.RootPath e o spa.Options.SourcePath
+                // para inicializar  HealthCheck criado pelo  npm e não o criado pelo (ClientApp) Visual Studio
                 configuration.RootPath = "ClientApp/dist";
                 //configuration.RootPath = "HealthCheck/dist";
             });
+            
             services.AddHealthChecks();
+            // A classe ICMPHealthCheck é um Serviço também conhecido com Middleware
+            services.AddHealthChecks().AddCheck<ICMPHealthCheck>("ICMP");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
