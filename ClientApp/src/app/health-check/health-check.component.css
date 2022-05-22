@@ -1,0 +1,15 @@
+.status{
+    font-weight: bold;
+}
+
+.Heathy{
+    color: green;
+}
+
+.Degraded{
+    color: orange;
+}
+
+.Unhealthy{
+    color: red;
+}

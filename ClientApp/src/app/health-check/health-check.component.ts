@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-health-check',
@@ -6,10 +7,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./health-check.component.css']
 })
 export class HealthCheckComponent implements OnInit {
+  public result: Result;
+  constructor(
+    private http: HttpClient,
 
-  constructor() { }
+    @Inject('BASE_URL')
+    private baseUrl: string
+  ) { }
 
   ngOnInit() {
+    this.http.get<Result>(this.baseUrl + 'hc').subscribe(result => {
+      this.result = result;
+    }, error => console.error(error));
   }
+}
 
+// Interfaces
+interface Result {
+  checks: Check[];
+  totalStatus: string;
+  totalResponse: number;
+}
+
+interface Check {
+  name: string;
+  status: string;
+  responseTime: number;
 }
