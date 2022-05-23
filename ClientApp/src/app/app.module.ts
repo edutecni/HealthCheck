@@ -22,7 +22,8 @@ import { HealthCheckComponent } from './health-check/health-check.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'health-check', component: HealthCheckComponent }
       
     ])
   ],

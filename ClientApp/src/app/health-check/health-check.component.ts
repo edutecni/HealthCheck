@@ -26,7 +26,7 @@ export class HealthCheckComponent implements OnInit {
 interface Result {
   checks: Check[];
   totalStatus: string;
-  totalResponse: number;
+  totalResponseTime: number;
 }
 
 interface Check {
